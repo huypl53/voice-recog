@@ -1,0 +1,25 @@
+[project]
+name = "voice-recog"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.115.12",
+    "librosa>=0.11.0",
+    "matplotlib>=3.10.3",
+    "python-multipart>=0.0.20",
+    "shared",
+    "soundfile>=0.13.1",
+    "uvicorn[standard]>=0.34.2",
+    "wave2vec-250",
+]
+
+[tool.uv.workspace]
+members = [
+    "packages/wave2vec_250",
+]
+
+[tool.uv.sources]
+shared = { path = "packages/shared", editable = true }
+wave2vec-250 = { workspace = true }

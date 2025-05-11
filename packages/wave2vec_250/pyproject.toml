@@ -1,0 +1,24 @@
+[project]
+name = "wave2vec-250"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "datasets>=3.6.0",
+    "kenlm",
+    "librosa>=0.11.0",
+    "pyctcdecode==0.1.0",
+    "torch>=2.7.0",
+    "transformers>=4.51.3",
+    "shared",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch" }
+kenlm = { url = "https://github.com/kpu/kenlm/archive/master.zip" }
+
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"

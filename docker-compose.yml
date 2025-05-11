@@ -1,0 +1,26 @@
+services:
+  voice-recog:
+    container_name: voice-recog
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["uv", "run", "fastapi", "run", "src/voice_recog/app.py"]
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      - ${LOG_DIR:-./logs}:/app/logs
+      - ${CACHE_DIR:-./cache}:/app/cache
+    env_file:
+      - .env
+    environment:
+      - HOST=${HOST:-0.0.0.0}
+      - PORT=${PORT:-8000}
+      - CACHE_DIR=${CACHE_DIR:-./cache}
+      - LOG_DIR=${LOG_DIR:-./logs}
+    # restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 
