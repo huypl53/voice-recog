@@ -1,0 +1,11 @@
+defaults:
+  - _self_
+
+model_checkpoint: ./chunkformer-large-vie/  # Path to Huggingface checkpoint repo
+total_batch_duration: 1800  # The total audio duration (in second) in a batch that your GPU memory can handle at once
+chunk_size: 64  # Size of the chunks
+left_context_size: 128  # Size of the left context
+right_context_size: 128  # Size of the right context
+full_attn: false  # Whether to use full attention with caching
+device: cuda  # Device to run the model on (cuda or cpu)
+dtype: fp32  # Dtype for autocast (fp32, bf16, fp16)
