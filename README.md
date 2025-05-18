@@ -19,5 +19,5 @@
 uv pip install --editable ./packages/wave2vec_250
 uv pip install --editable ./packages/former
 
-uv run fastapi run ./src/voice_recog/app.py
+uv run run ./src/voice_recog/app.py
 ```

@@ -13,7 +13,12 @@ RUN apt-get update && apt-get install -y \
     g++ \
     wget \
     unzip \
+    git \
+    git-lfs \
     && rm -rf /var/lib/apt/lists/*
+
+# Initialize git lfs
+RUN git lfs install
 
 # Copy project files
 COPY pyproject.toml uv.lock ./
@@ -27,10 +32,11 @@ RUN pip install --upgrade pip && \
     uv pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu && \
     uv pip install -e .
 
-# Create necessary directories
+# Create necessary directories and download resources
 RUN mkdir -p logs cache && \
     wget https://huggingface.co/nguyenvulebinh/wav2vec2-base-vietnamese-250h/resolve/main/vi_lm_4grams.bin.zip && \
-    unzip -q vi_lm_4grams.bin.zip -d ./cache/
+    unzip -q vi_lm_4grams.bin.zip -d ./cache/ && \
+    git clone https://huggingface.co/khanhld/chunkformer-large-vie ./packages/former/chunkformer-large-vie
 
 # Set environment variables
 ENV HOST=0.0.0.0
