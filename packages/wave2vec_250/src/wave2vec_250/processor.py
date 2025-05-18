@@ -128,8 +128,12 @@ class Wave2VecRecognizer(BaseSpeechRecognizer):
 
     def __init__(self, cache_dir: Union[str, Path] = "./cache/"):
         """Initialize the Wave2Vec2 recognizer"""
-        super().__init__(cache_dir)
-        self.processor, self.model, self.ngram_lm_model = self._initialize_models()
+        self.cache_dir = cache_dir
+        self.processor, self.model, self.ngram_lm_model = (
+            None,
+            None,
+            None,
+        )  # self._initialize_models()
 
     def _initialize_models(self) -> Tuple[Any, Any, Any]:
         """Initialize Wav2Vec2 models and language model"""
@@ -170,6 +174,9 @@ class Wave2VecRecognizer(BaseSpeechRecognizer):
         beam_width: int = 500,
     ) -> Tuple[str, Optional[str]]:
         """Implementation of speech recognition"""
+        if self.processor is None or self.model is None or self.ngram_lm_model is None:
+            self.processor, self.model, self.ngram_lm_model = self._initialize_models()
+
         # Load audio
         y, sr = librosa.load(audio_path, sr=16000)
 
