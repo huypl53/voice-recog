@@ -2,10 +2,12 @@
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Optional, Tuple, Union, Dict, Any
+from typing import List, Optional, Tuple, Union, Dict, Any
 import numpy as np
 from shared.logger import get_logger, log_execution_time
 import logging
+
+from shared.schema.api import TimestampTranscription
 
 
 class BaseAudioPreprocessor(ABC):
@@ -62,30 +64,27 @@ class BaseAudioPreprocessor(ABC):
 class BaseSpeechRecognizer(ABC):
     """Abstract base class for speech recognition"""
 
-    def __init__(self, cache_dir: Union[str, Path] = "./cache/"):
+    def __init__(self):
         """
         Initialize the base speech recognizer.
 
         Args:
             cache_dir: Directory to cache model files
         """
-        self.cache_dir = Path(cache_dir)
         self.logger = get_logger(__name__, file_name="./logs/")
 
     @abstractmethod
     def transcribe(
         self,
         audio_path: Union[str, Path],
-        use_beam_search: bool = True,
-        beam_width: int = 500,
-    ) -> Tuple[str, Optional[str]]:
+        **kwargs,
+    ) -> Union[str, None, List[str], List[TimestampTranscription]]:
         """
         Transcribe audio file.
 
         Args:
             audio_path: Path to the audio file
-            use_beam_search: Whether to use beam search decoding
-            beam_width: Beam width for beam search decoding
+            **kwargs: Additional keyword arguments
 
         Returns:
             Tuple of (greedy_search_output, beam_search_output)
@@ -181,8 +180,7 @@ class AudioProcessor:
     def transcribe(
         self,
         audio_path: Union[str, Path],
-        use_beam_search: bool = True,
-        beam_width: int = 500,
+        **kwargs,
     ) -> Tuple[str, Optional[str]]:
         """Transcribe audio using the configured recognizer"""
-        return self.recognizer.transcribe(audio_path, use_beam_search, beam_width)
+        return self.recognizer.transcribe(audio_path, **kwargs)

@@ -49,7 +49,7 @@ def get_logger(name, level=logging.INFO, file_name=None):
             file_handler = logging.FileHandler(file_name)
         else:
             os.makedirs(file_name, exist_ok=True)
-            name = f"{os.path.basename(file_name)}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
+            name = f"{name}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
             file_handler = logging.FileHandler(os.path.join(file_name, name))
         file_handler.setLevel(level)
         file_handler.setFormatter(formatter)
